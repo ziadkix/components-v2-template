@@ -109,6 +109,12 @@ scripts
   deploy.js     registers slash commands
 ```
 
+
+## Getting help
+
+If you build something with this template and get stuck, open a [Q&A discussion](https://github.com/ziadkix/components-v2-template/discussions/categories/q-a) with your code snippet and the exact error - questions with repro details usually get answered fast.
+
+This template was put together with pair-testing from [@bsmtk7-hub](https://github.com/bsmtk7-hub) - thanks for the second pair of eyes on the onboarding flow!
 ## License
 
 MIT
