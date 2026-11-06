@@ -19,7 +19,7 @@ A small discord.js v14 starter built around Components V2. It comes with a comma
 ## Setup
 
 ```bash
-git clone https://github.com/your-name/components-v2-template.git
+git clone https://github.com/ziadkix/components-v2-template.git
 cd components-v2-template
 npm install
 ```
