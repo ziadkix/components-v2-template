@@ -1,0 +1,43 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check-source-and-load:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      # syntax check every source file without running it
+      - name: node --check all sources
+        run: for f in $(find src scripts -name '*.js' -type f); do node --check "$f"; done
+      # all commands must register through the same loader the bot uses
+      - name: command loader dry-run
+        env:
+          TOKEN: ci-dry-run
+          CLIENT_ID: ci-dry-run
+        run: |
+          node -e "
+            const c = { commands: new Map() };
+            require('./src/handlers/commands')(c);
+            if (c.commands.size < 3) { console.error('expected at least 3 commands, got', c.commands.size); process.exit(1); }
+            console.log('loaded', c.commands.size, 'commands:', [...c.commands.keys()].join(', '));
+          "
+      # all v2 components must register with unique ids
+      - name: component loader dry-run
+        env:
+          TOKEN: ci-dry-run
+          CLIENT_ID: ci-dry-run
+        run: |
+          node -e "
+            const c = { components: new Map() };
+            require('./src/handlers/components')(c);
+            if (c.components.size < 2) { console.error('expected at least 2 components, got', c.components.size); process.exit(1); }
+            console.log('loaded', c.components.size, 'components:', [...c.components.keys()].join(', '));
+          "
